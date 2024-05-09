@@ -8,11 +8,10 @@ model = pickle.load(open('insurance_model.pkl', 'rb'))
 
 @app.route('/')
 def home():
-    return render_template()
+    return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
-
     print(request.get_json())
     # Extracting form data
     age = request.get_json()['age']
@@ -21,8 +20,6 @@ def predict():
     children = request.get_json()['children']
     smoker = request.get_json()['smoker']
     region = request.get_json()['region']
-
-
     # Convert to appropriate data types
     age = int(age)
     gender = int(gender)
@@ -33,7 +30,6 @@ def predict():
 
     # Make prediction
     prediction = model.predict([[age, gender, bmi, children, smoker, region]])
-
     output= prediction.tolist()
 
     output2= json.dumps(output)

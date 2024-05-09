@@ -9,76 +9,21 @@ const predictValue = document.getElementById("predictedValue");
 const form = document.getElementById("userForm");
 
 
-// Form submit event listener
-// form.addEventListener('submit', (event) => {
-//   event.preventDefault(); // Prevent form submission
-
-//   // Form validation
-//   if (age.value === "") {
-//     showToast("error", "Age is required please!");
-//     return;
-//   }
-//   if (isNaN(age.value) || age.value <= 0) {
-//     showToast("error", "Invalid Age!");
-//     return;
-//   }
-//   if (bmi.value === "") {
-//     showToast("error", "BMI is required please!");
-//     return;
-//   }
-//   if (isNaN(bmi.value) || bmi.value <= 0) {
-//     showToast("error", "Invalid BMI!");
-//     return;
-//   }
-//   if (children.value === "") {
-//     showToast("error", "Number of children is required!");
-//     return;
-//   }
-//   if (isNaN(children.value) || children.value <= -1) {
-//     showToast("error", "Invalid Children!");
-//     return;
-//   }
-//   if (gender.value === "") {
-//     showToast("error", "Please select your gender!");
-//     return;
-//   }
-//   if (smoker.value === "") {
-//     showToast("error", "Please select your smoking status!");
-//     return;
-//   }
-//   if (region.value === "") {
-//     showToast("error", "Please select the region!");
-//     return;
-//   }
-
-//   // If all validations pass, submit the form after a 3-second delay
-
-  
-   
-//     form.method = "POST";
-//     form.action = "/predict";
-//     form.submit();
-
-//     // Display success message
-//     Swal.fire({
-//       title: "You're Insurance Is: " + predictValue.value,
-//       showClass: {
-//         popup: `animate__animated`
-//       },
-//     });
-  
-// });
-
-
-
-
-$('.pridict').click(()=>{
+$('.predict').click(()=>{
   if (age.value === "") {
         showToast("error", "Age is required please!");
         return;
       }
       if (isNaN(age.value) || age.value <= 0) {
         showToast("error", "Invalid Age!");
+        return;
+      }
+      if(isNaN(age.value) || age.value <= 18) {
+        showToast("error", "Age MustBe Greater Then 18 !");
+        return;
+      }
+      if(isNaN(age.value) || age.value >= 100) {
+        showToast("error", "Age MustBe Less Then 100 !");
         return;
       }
       if (bmi.value === "") {
@@ -89,12 +34,24 @@ $('.pridict').click(()=>{
         showToast("error", "Invalid BMI!");
         return;
       }
+      if(isNaN(bmi.value) || bmi.value <=14){
+        showToast("error", "BMI MustBe Greater Than 15 !");
+        return;
+      }
+      if(isNaN(bmi.value) || bmi.value >=36){
+        showToast("error", "BMI MustBe Less Than 35 !");
+        return;
+      }
       if (children.value === "") {
-        showToast("error", "Number of children is required!");
+        showToast("error", "Number of Memebers is required!");
         return;
       }
       if (isNaN(children.value) || children.value <= -1) {
-        showToast("error", "Invalid Children!");
+        showToast("error", "Invalid Members !");
+        return;
+      }
+      if(isNaN(children.value) || children.value>=16){
+        showToast("error", "NO. Of Members Must Be Lessthen 15 !");
         return;
       }
       if (gender.value === "") {
@@ -117,9 +74,8 @@ $('.pridict').click(()=>{
     smoker: smoker.value,
     region: region.value,
   }
-
   $.ajax({
-    url: 'http://129.0.0.1:5000/predict',
+    url: 'http://127.0.0.1:5000/predict',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify(data),
@@ -129,21 +85,18 @@ $('.pridict').click(()=>{
       ]
       console.log(respnse);
           // Display success message
-    Swal.fire({
-      title: "You're Insurance Is: " + "$"+ respnse,
-      showClass: {
-        popup: `animate__animated`
-      },
-    });
-
+          Swal.fire({
+            title: "Your Mediccal Insurance Is: $" + parseFloat(respnse).toFixed(2),
+            showClass: {
+              popup: `animate__animated`
+            },
+          });
     },
     error: function(error){
       console.log(error);
     }
   })
 });
-
-
 
 // Function to display toast message
 function showToast(icon, title) {
