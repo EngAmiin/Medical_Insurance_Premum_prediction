@@ -40,6 +40,13 @@ def register():
         email = request.form['email']
         password = request.form['password']
 
+         # Check if the email already exists
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            error_message = 'Email already exists!.'
+            return render_template('register.html', error=error_message)
+        
+          # If email is unique, proceed with registration    
         new_user = User(name=name,email=email,password=password)
         db.session.add(new_user)
         db.session.commit()
