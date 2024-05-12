@@ -40,8 +40,15 @@ def register():
         email = request.form['email']
         password = request.form['password']
 
+        # Check if any field is empty
+        if not name or not email or not password:
+            error_message = 'All fields are required.'
+            return render_template('register.html', error=error_message)
+
+
          # Check if the email already exists
         existing_user = User.query.filter_by(email=email).first()
+           # Check if any field is empty
         if existing_user:
             error_message = 'Email already exists!.'
             return render_template('register.html', error=error_message)
@@ -51,6 +58,8 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         return redirect('/login')
+    
+    
 
     return render_template('register.html')
 
@@ -62,8 +71,14 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
+        # Check if any field is empty
+        if not email or not password:
+            error_message = 'All fields are required.'
+            return render_template('login.html', error=error_message)
+
+
         if not user:
-            error_message = 'Incorrect email. Please try again.'
+            error_message = 'Incorrect email.  Please try again.!'
             return render_template('login.html', error=error_message)
         
         if user and user.check_password(password):
