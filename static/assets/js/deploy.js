@@ -8,6 +8,20 @@ const region = document.querySelector("#region");
 const predictValue = document.getElementById("predictedValue");
 const form = document.getElementById("userForm");
 
+const email= document.querySelector("#email");
+const password= document.querySelector("#password");
+
+$('.login').click(()=>{
+  if(email.value== ""){
+    showToast("error", "Email is required please!");
+    return;
+  }
+  if(password.value== ""){
+    showToast("error", "Password is required please!");
+    return;
+  }
+})
+
 
 $('.predict').click(()=>{
   if (age.value === "") {
